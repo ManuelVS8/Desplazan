@@ -533,6 +533,7 @@ let mode = 'play';
 let currentGroup = '';
 let correctSelections = 0;
 let totalAnswers = 0;
+let selectedMarkers = new Set(); // Almacena los índices de los marcadores seleccionados para el grupo actual
 
 
 function fmtTime(s){ const m=Math.floor(s/60).toString().padStart(2,'0'); const ss=(s%60).toString().padStart(2,'0'); return `${m}:${ss}`; }
@@ -621,6 +622,7 @@ function beginPlay(){
   correctCount = 0;
   totalAnswers = 0;
   correctSelections = 0;
+  selectedMarkers.clear(); // Resetear los marcadores seleccionados
   updateProgress();
   markers.forEach(m=> m.classList.remove('target-green','reveal-red','correct'));
   
@@ -641,6 +643,11 @@ function onMarkerClick(e){
   const idxClicked = +this.dataset.idx;
   const currentPair = PAIRS[idxClicked];
   
+  // Verificar si ya se ha seleccionado este marcador para el grupo actual
+  if(selectedMarkers.has(idxClicked)) {
+    return; // Ignorar si ya fue seleccionado para este grupo
+  }
+  
   if(currentPair.word !== currentGroup) {
     // Selección incorrecta
     this.classList.add('reveal-red');
@@ -656,6 +663,7 @@ function onMarkerClick(e){
   reproducirSonidoCorrecto();
   correctSelections++;
   totalAnswers++;
+  selectedMarkers.add(idxClicked); // Añadir a los marcadores seleccionados
   updateProgress();
 
   // Verificar si se han seleccionado las 3 correctas
@@ -669,6 +677,7 @@ function onMarkerClick(e){
         }
       });
       correctSelections = 0;
+      selectedMarkers.clear(); // Limpiar los marcadores seleccionados para el nuevo grupo
       
       // Pasar al siguiente grupo
       const currentIndex = playOrder.indexOf(currentGroup);
