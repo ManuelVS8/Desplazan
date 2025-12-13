@@ -4,6 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
 <title>Los animales se desplazan</title>
+<link rel="icon" href="https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/icono.ico" type="image/x-icon">
 <style>
   /* ====== Reset & base ====== */
   * { box-sizing: border-box; margin:0; padding:0; }
@@ -152,34 +153,34 @@
 
   .loading-indicator {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    display: none; /* Inicialmente oculto */
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    flex-direction: column;
+    top: 0,
+    left: 0,
+    width: 100%,
+    height: 100%,
+    background: rgba(0, 0, 0, 0.7),
+    display: none, /* Inicialmente oculto */
+    justify-content: center,
+    align-items: center,
+    z-index: 1000,
+    flex-direction: column,
   }
   .loading-spinner {
-    width: 50px;
-    height: 50px;
-    border: 5px solid #f3f3f3;
-    border-top: 5px solid var(--orange);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin-bottom: 20px;
+    width: 50px,
+    height: 50px,
+    border: 5px solid #f3f3f3,
+    border-top: 5px solid var(--orange),
+    border-radius: 50%,
+    animation: spin 1s linear infinite,
+    margin-bottom: 20px,
   }
   @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
   }
   .loading-text {
-    color: white;
-    font-size: 1.2rem;
-    text-align: center;
+    color: white,
+    font-size: 1.2rem,
+    text-align: center,
   }
 
   @media (min-width:900px){ .board{ grid-template-columns: 360px 1fr; align-items:start; } .panel{ order:1; } .stage{ order:2; } }
@@ -267,7 +268,7 @@
 
       <div class="stage">
         <div class="img-wrap" id="imgWrap">
-          <img id="bodyImg" src="https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/Vivos_Inertes/Desplazan/Desplazan.png" alt="Animales para identificar su forma de desplazamiento">
+          <img id="bodyImg" src="https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/Vivos_Inertes/Desplazan/Desplazan1.png" alt="Animales para identificar su forma de desplazamiento">
           <div class="overlay-click" id="overlayClick" aria-hidden="true"></div>
         </div>
         <div class="startGameArea"></div>
@@ -533,7 +534,6 @@ let mode = 'play';
 let currentGroup = '';
 let correctSelections = 0;
 let totalAnswers = 0;
-let selectedMarkers = new Set(); // Almacena los índices de los marcadores seleccionados para el grupo actual
 
 
 function fmtTime(s){ const m=Math.floor(s/60).toString().padStart(2,'0'); const ss=(s%60).toString().padStart(2,'0'); return `${m}:${ss}`; }
@@ -622,7 +622,6 @@ function beginPlay(){
   correctCount = 0;
   totalAnswers = 0;
   correctSelections = 0;
-  selectedMarkers.clear(); // Resetear los marcadores seleccionados
   updateProgress();
   markers.forEach(m=> m.classList.remove('target-green','reveal-red','correct'));
   
@@ -643,11 +642,6 @@ function onMarkerClick(e){
   const idxClicked = +this.dataset.idx;
   const currentPair = PAIRS[idxClicked];
   
-  // Verificar si ya se ha seleccionado este marcador para el grupo actual
-  if(selectedMarkers.has(idxClicked)) {
-    return; // Ignorar si ya fue seleccionado para este grupo
-  }
-  
   if(currentPair.word !== currentGroup) {
     // Selección incorrecta
     this.classList.add('reveal-red');
@@ -663,7 +657,6 @@ function onMarkerClick(e){
   reproducirSonidoCorrecto();
   correctSelections++;
   totalAnswers++;
-  selectedMarkers.add(idxClicked); // Añadir a los marcadores seleccionados
   updateProgress();
 
   // Verificar si se han seleccionado las 3 correctas
@@ -677,7 +670,6 @@ function onMarkerClick(e){
         }
       });
       correctSelections = 0;
-      selectedMarkers.clear(); // Limpiar los marcadores seleccionados para el nuevo grupo
       
       // Pasar al siguiente grupo
       const currentIndex = playOrder.indexOf(currentGroup);
